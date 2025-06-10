@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "mapbox-gl": "^3.10.0",
+    "react-scripts": "^5.0.1"
+  },
+  "proxy": "http://localhost:3002"
+}

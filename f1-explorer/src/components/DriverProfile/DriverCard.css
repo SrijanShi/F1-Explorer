@@ -1,0 +1,68 @@
+.driver-card {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.driver-card:hover {
+    background-color: var(--team-color, rgba(255, 255, 255, 0.2));
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--team-color, #ffffffaa);
+}
+
+.driver-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid white;
+}
+
+.driver-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.driver-number {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ddd;
+    margin-bottom: 1rem;
+}
+
+.driver-team {
+    font-weight: 700;
+    color: #ccc;
+}
+
+.favorite-btn {
+    background-color: transparent;
+    border: 1px solid var(--team-color, #ff4757);
+    color: var(--team-color, #ff4757);
+    padding: 8px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.favorite-btn:hover:not(:disabled) {
+    background-color: var(--team-color, #ff4757);
+    color: white;
+}
+
+.favorite-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

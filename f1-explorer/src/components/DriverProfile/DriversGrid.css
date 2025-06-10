@@ -1,0 +1,77 @@
+.grid-container {
+    min-height: 100vh;
+    width: 100vw;
+    padding: 4rem 2rem 2rem;
+    background: linear-gradient(to bottom right, #000000, #1a1a1a);
+    position: relative;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.grid-title {
+    font-size: 3rem;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    text-shadow: 0px 2px 8px rgba(255, 255, 255, 0.15);
+}
+
+.back-button {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    padding: 0.6rem 1.2rem;
+    background-color: transparent;
+    border: 2px solid #ff4d4d;
+    border-radius: 50px;
+    color: #ff4d4d;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.back-button:hover {
+    background-color: #ff4d4d;
+    color: white;
+    box-shadow: 0 0 10px #ff4d4d;
+}
+
+.drivers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.loading-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    color: white;
+}
+
+.loading-spinner {
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-top: 5px solid #ff4d4d;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

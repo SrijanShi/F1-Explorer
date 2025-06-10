@@ -1,0 +1,105 @@
+/* Google Font (Add this to index.html if needed) */
+/* <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> */
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212;
+    color: white;
+}
+
+.dashboard-container {
+    min-height: 100vh;
+    background-color: #121212;
+    color: white;
+    padding-bottom: 2rem;
+}
+
+.dashboard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #1f1f1f;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.dashboard-nav h1 {
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.logout-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #ff4757;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background-color: #ff2e42;
+    transform: scale(1.05);
+}
+
+/* Hero Banner */
+.hero-banner {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: radial-gradient(circle, #1a1a1a, #121212);
+    color: #ff4757;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+.hero-banner h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.hero-banner p {
+    font-size: 1rem;
+    color: #cccccc;
+}
+
+/* Services Grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: linear-gradient(145deg, #1c1c1c, #222);
+    padding: 2rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #333;
+    text-align: center;
+    color: white;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+    border-color: #ff4757;
+}
+
+.service-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.service-card p {
+    font-size: 1rem;
+    color: #ccc;
+}

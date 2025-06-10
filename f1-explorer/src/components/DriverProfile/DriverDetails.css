@@ -1,0 +1,102 @@
+.driver-details {
+    padding: 2rem;
+    background-color: #0d1117;
+    color: white;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.driver-header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    border-left: 6px solid var(--team-color, #ff4757);
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+}
+
+.driver-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #444;
+}
+
+.driver-meta h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.driver-meta p {
+    margin: 4px 0;
+    color: #ccc;
+}
+
+.chart-section h2,
+.race-history h2 {
+    margin-bottom: 1rem;
+}
+
+.chart-wrapper {
+    background: #1c1f26;
+    padding: 1rem;
+    border-radius: 8px;
+    height: 300px;
+    margin-bottom: 2rem;
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.history-card {
+    background-color: #161b22;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 5px solid #888;
+}
+
+.history-card .race-date {
+    font-size: 0.85rem;
+    color: #bbb;
+}
+
+.history-card .race-pos {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.driver-loading, .driver-error {
+    padding: 3rem;
+    text-align: center;
+    color: #ccc;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #444;
+    border-top: 4px solid #888;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

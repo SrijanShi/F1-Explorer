@@ -1,0 +1,45 @@
+body {
+    background-color: black;  /* Full black background */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.map-container {
+    height: 100vh;
+    width: 100vw;
+}
+
+.selector-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #222;   /* Dark background for selector */
+    border: 2px solid #ff4500; /* Bright orange border */
+    border-radius: 20px;      /* More rounded */
+    padding: 5px 15px;        /* Compact padding */
+    font-size: 14px;          /* Smaller text for concise design */
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+    width: 200px;             /* Shorter width */
+    box-shadow: 0 4px 8px rgba(255, 69, 0, 0.8); /* Soft glowing effect */
+}
+
+.selector-container select {
+    background-color: #333;  /* Dark background for dropdown options */
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.selector-container select:focus {
+    outline: none;
+    border: 2px solid #ff6347;  /* Brighter orange on focus */
+}
