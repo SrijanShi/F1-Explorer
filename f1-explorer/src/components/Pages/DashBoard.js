@@ -15,7 +15,6 @@ const Dashboard = () => {
             <nav className="dashboard-nav">
                 <h1>F1 Explorer</h1>
                 <div className="nav-buttons">
-                    
                     <button onClick={handleLogout} className="logout-btn">Logout</button>
                 </div>
             </nav>
@@ -41,6 +40,11 @@ const Dashboard = () => {
                 <div className="service-card" onClick={() => navigate('/news')}>
                     <h2>📰 News</h2>
                     <p>Stay updated with the latest F1 news</p>
+                </div>
+                {/* Add highlights card */}
+                <div className="service-card highlights-card" onClick={() => navigate('/highlights')}>
+                    <h2>🎬 Race Highlights</h2>
+                    <p>Watch the latest F1 race highlights with key moments</p>
                 </div>
             </div>
         </div>

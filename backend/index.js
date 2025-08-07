@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './src/routes/userRoutes.js';
 import newsRoutes from './src/routes/newsRoutes.js';
+import highlightsRoutes from './src/routes/highlightsRoutes.js'; 
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use('/api/auth', userRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/news', newsRoutes);
-
+app.use('/api/highlights', highlightsRoutes); // Add this line
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -26,12 +27,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
     .then(() => {
         console.log('MongoDB connected');
-})
-    .then(() => console.log('Connected to MongoDB'))
+    })
     .catch((error) => console.error('MongoDB connection error:', error));
 
 // Start server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

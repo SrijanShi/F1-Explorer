@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure/core-auth": "^1.9.0",
+    "@google/generative-ai": "^0.24.1",
     "@tensorflow/tfjs": "~4.11.0",
     "@tensorflow/tfjs-node": "^4.22.0",
     "@upscalerjs/esrgan-medium": "^1.0.0-beta.13",
@@ -21,9 +24,14 @@
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "mongoose": "^8.14.0",
+    "openai": "^5.7.0",
     "sharp": "^0.33.5",
-    "upscaler": "^1.0.0-beta.19"
+    "upscaler": "^1.0.0-beta.19",
+    "youtube-transcript": "^1.2.1",
+    "youtube-transcript-api": "^3.0.0",
+    "youtube-transcript-plus": "^1.0.4"
   },
   "description": ""
 }

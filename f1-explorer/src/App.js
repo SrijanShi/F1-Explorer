@@ -11,7 +11,7 @@ import Signup from './components/Authentication/signup';
 import ProtectedRoute from './components/Pages/ProtectedRoute';
 import Callback from './components/Authentication/callback';
 import News from './components/News/news';
-
+import HighlightsPage from './components/Highlights/HighlightsPage';
 
 function App() {
     return (
@@ -52,6 +52,12 @@ function App() {
                 <Route path="/news" element={
                     <ProtectedRoute>
                         <News />
+                    </ProtectedRoute>
+                } />
+                {/* Add highlight route */}
+                <Route path="/highlights" element={
+                    <ProtectedRoute>
+                        <HighlightsPage />
                     </ProtectedRoute>
                 } />
             </Routes>
