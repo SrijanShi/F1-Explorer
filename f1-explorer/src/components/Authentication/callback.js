@@ -21,7 +21,7 @@ const Callback = () => {
                         sub: user.sub
                     };
                     
-                    // Send user data to your backend
+                    // Send user data to backend
                     const response = await fetch('http://localhost:5000/api/auth/auth0', {
                         method: 'POST',
                         headers: {

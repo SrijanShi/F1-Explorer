@@ -12,6 +12,7 @@ const MapController = ({ geoJsonData }) => {
     useEffect(() => {
         if (geoJsonData) {
             if (geoJsonRef.current) {
+                //[lat, long], zoom level, time
                 map.flyTo([20, 0], 2, { duration: 2 }); // Step 1: Zoom out to world map
                 setTimeout(() => {
                     map.removeLayer(geoJsonRef.current); // Step 2: Remove old layer after zoom out
@@ -59,7 +60,9 @@ const CircuitMap = ({ selectedCircuit }) => {
                 .catch((error) => console.error("Error fetching GeoJSON:", error));
         }
     }, [selectedCircuit]);
-
+    //MapContainer: The photo frame.
+    // TileLayer: The printed world map inside the frame.
+    // MapController: Your notes, pins, and highlights drawn over it.
     return (
         <div className="map-container">
             <MapContainer

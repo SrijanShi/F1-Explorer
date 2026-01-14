@@ -83,7 +83,7 @@ export const auth0Login = async(req, res) => {
         const { email, name, sub } = req.body;
         let user = await User.findOne({ auth0Id: sub });
         if(!user) {
-            user = await User.findOne({  email }); //If user has signer up earlier but didnt use Auth0 
+            user = await User.findOne({ email }); //If user has signed up earlier but didnt use Auth0 for the purpose of registering and now is using auth0 for login
 
             if(user) {
                 user.auth0Id = sub;

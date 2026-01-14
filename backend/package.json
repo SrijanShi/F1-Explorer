@@ -2,9 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "better_image.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "node better_image.js",
+    "image-server": "node better_image.js",
+    "dev": "node index.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

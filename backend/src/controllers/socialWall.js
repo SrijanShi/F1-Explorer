@@ -1,142 +1,203 @@
-// import axios from 'axios';
-// import { TwitterUser, Tweet } from '../models/twitterModel.js';
-// import dotenv from 'dotenv';
+import { DriverSocial, InstegramPost, TwitterPost } from '../models/socialMediaModel.js';
+import {userModel} from '../models/userModel.js';
+import axios from 'axios';
+import dotenv from 'dotenv';
 
-// dotenv.config();
+dotenv.config();
 
-// const TWITTER_BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
+const F1_DRIVERS_SOCIAL = [
+  {
+    driver_number: '1',
+    full_name: 'Max Verstappen',
+    instagram_username: 'maxverstappen1',
+    twitter_username: 'Max33Verstappen',
+    team_name: 'Red Bull Racing'
+  },
+  {
+    driver_number: '16',
+    full_name: 'Charles Leclerc',
+    instagram_username: 'charles_leclerc',
+    twitter_username: 'Charles_Leclerc',
+    team_name: 'Ferrari'
+  },
+  {
+    driver_number: '55',
+    full_name: 'Carlos Sainz Jr.',
+    instagram_username: 'carlossainz55',
+    twitter_username: 'Carlossainz55',
+    team_name: 'Williams'  
+  },
+  {
+    driver_number: '44',
+    full_name: 'Lewis Hamilton',
+    instagram_username: 'lewishamilton',
+    twitter_username: 'LewisHamilton',
+    team_name: 'Ferrari'
+  },
+  {
+    driver_number: '12',
+    full_name: 'Kimi Antonelli',
+    instagram_username: null,
+    twitter_username: null,
+    team_name: 'Mercedes'
+  },
+  {
+    driver_number: '63',
+    full_name: 'George Russell',
+    instagram_username: 'kimi.antonelli',
+    twitter_username: 'F1KimiAntonelli',
+    team_name: 'Mercedes'
+  },
+  {
+    driver_number: '81',
+    full_name: 'Oscar Piastri',
+    instagram_username: 'oscarpiastri',
+    twitter_username: 'OscarPiastri',
+    team_name: 'McLaren'
+  },
+  {
+    driver_number: '4',  // placeholder if needed
+    full_name: 'Lando Norris',
+    instagram_username: 'lando',
+    twitter_username: 'LandoNorris',
+    team_name: 'McLaren'
+  },
+  {
+    driver_number: '23',
+    full_name: 'Alexander Albon',
+    instagram_username: 'alex_albon',
+    twitter_username: 'alex_albon',
+    team_name: 'Williams'
+  },
+  {
+    driver_number: '18',
+    full_name: 'Lance Stroll',
+    instagram_username: 'lance_stroll',
+    twitter_username: 'lance_stroll',
+    team_name: 'Aston Martin'
+  },
+  {
+    driver_number: '14',
+    full_name: 'Fernando Alonso',
+    instagram_username: 'fernandoalo_oficial',
+    twitter_username: 'alo_oficial',
+    team_name: 'Aston Martin'
+  },
+  {
+    driver_number: '31',
+    full_name: 'Esteban Ocon',
+    instagram_username: 'estebanocon',
+    twitter_username: 'OconEsteban',
+    team_name: 'Haas'
+  },
+  {
+    driver_number: '87',
+    full_name: 'Oliver Bearman',
+    instagram_username: 'olliebearman',
+    twitter_username: 'OllieBearman',
+    team_name: 'Haas'
+  },
+  {
+    driver_number: '27',
+    full_name: 'Nico Hülkenberg',
+    instagram_username: 'hulkhulkenberg',
+    twitter_username: 'HulkHulkenberg',
+    team_name: 'Kick Sauber'
+  },
+  {
+    driver_number: '5',
+    full_name: 'Gabriel Bortoleto',
+    instagram_username: 'gabrielbortoleto_',
+    twitter_username: 'gabortoleto85',
+    team_name: 'Kick Sauber'
+  },
+  {
+    driver_number: '10',
+    full_name: 'Pierre Gasly',
+    instagram_username: 'pierregasly',
+    twitter_username: 'PierreGASLY',
+    team_name: 'Alpine'
+  },
+  {
+    driver_number: '21',
+    full_name: 'Colapinto',
+    instagram_username: 'francolapinto',
+    twitter_username: 'FranColapinto',
+    team_name: 'Alpine'
+  },
+  {
+    driver_number: '22',
+    full_name: 'Yuki Tsunoda',
+    instagram_username: 'yukitsunoda0511',
+    twitter_username: 'yukitsunoda07',
+    team_name: 'Red Bull Racing'
+  },
+  {
+    driver_number: '25',
+    full_name: 'Isack Hadjar',
+    instagram_username: 'isackhadjar',
+    twitter_username: 'Isack_Hadjar',
+    team_name: 'Racing Bulls'
+  },
+  {
+    driver_number: '77',
+    full_name: 'Liam Lawson',
+    instagram_username: 'liamlawson30',
+    twitter_username: 'LiamLawson30',
+    team_name: 'Racing Bulls'
+  }
+]
 
-// const tweetCache = {
-//     tweets: [],
-//     lastFetched: null,
-//     currentIndex: 0,
-//     isFetching: false
-// };
+export const updateDriverSocials = async (res, req) => {
+    try {
+        console.log('Initializing driver social media update...');
 
-// const DRIVER_TEAM_HANDLES = [
-//     alo_oficial,
-//     LewisHamilton,
-//     HulkHulkenberg,
-//     Max33Verstappen,
-//     Carlossainz55,
-//     OconEsteban,
-//     lance_stroll,
-//     Charles_Leclerc,
-//     LandoNorris,
-//     GeorgeRussell63,
-//     alex_albon,
-//     yukitsunoda07,
-//     OscarPiastri,
-//     jackdoohan33,
-//     LiamLawson30,
-//     OllieBearman,
-//     Isack_Hadjar,
-//     gabortoleto85,
-//     PierreGASLY,
-//     McLarenF1,
-//     ScuderiaFerrari,
-//     redbullracing,
-//     MercedesAMGF1,
-//     WilliamsRacing,
-//     AstonMartinF1,
-//     HaasF1Team,
-//     AlpineF1Team,
-//     visacashapprb
-// ];
+        for(const driver of F1_DRIVERS_SOCIAL) {
+            const result = await DriverSocial.updateOne(
+                {driver_number: drivers.driver_number},
+                {
+                    $set: {
+                        ...driver,
+                        last_updated: new Date()
+                    }
+                },
+                {upsert: true}
+            );
+            if(result.upsertedCount > 0) {
+                insertedCount++;
+            }
+            else if(result.modifiedCount > 0){
+                updatedCount++;
+            }
+            console.log(`Updated Social for Driver: ${driver.full_name}`);
+        }
+        res.json({
+            details: {
+                inserted: insertedCount, 
+                updated: updateCount,
+                total: F1_DRIVERS_SOCIAL.length
+            }
+        })
+    }
+    catch(error) {
+        console.log('Error updating driver socials: ', error.message);
+    }
+}
 
+export const getSocialWall = async (req, res) => {
+    try {
+        const userId = req.userId;
 
-// export const initializeTwitterUsers = async (req, res) => {
-//     try {
-//         if(!TWITTER_BEARER_TOKEN) {
-//             return res.status(500).json({ message: 'Twitter Bearer Token not set' });
-//         }
-//         const usersToFetch = [];
+        const user_favorite_driver_list = await User.findById(userId).select('favorite_drivers');
 
-//         for(const username of DRIVER_TEAM_HANDLES) {
-//             const existingUser = await TwitterUser.findOne({ username });
+        if(!user_favorite_driver_list || user_favorite_driver_list.length === 0){
+            return res.json({
+                message: 'No Favorite Drivers found',
+                posts: []
+            });
+        }
 
-//             const oneWeek = new Date(Date.now()-7*24*60*60*1000);
-//             if(!existingUset || existingUser.lastFetched < oneWeek) {
-//                 usersToFetch.push(username);
-//             }
-
-//             if(usersToFetch.length === 0) {
-//                 const allUsers = await TwitterUser.find({ username: { $in: DRIVER_TEAM_HANDLES } });
-//                 return res.json({
-//                     message: 'All Twitter users are up to date',
-//                     users: allUsers
-//                 });
-//             }
-            
-//             const userBatches = [];
-//             for(let i = 0; i < usersToFetch.length; i += 30) {
-//                 userBatches.push(usersToFetch.slice(i, i + 30));
-//             }
-//             const updateUsers = [];
-
-//             for(const batch of userBatches) {
-//                 const usernames = batch.join(',');
-//                 const response = await axios.get(
-//                     'https://api.twitter.com/2/users/by', {
-//                       params: {
-//                         usernames,
-//                         'user.fields': 'profile_image_url,name'
-//                       },
-//                       headers: {
-//                         'Authorization': `Bearer ${TWITTER_BEARER_TOKEN}`
-//                       }
-//                     }
-//                 );
-//                 if(response.data.data){
-//                     for(const user of response.data.data) {
-//                         /racing|F1Team|Ferrari|Mercedes|Bull|McLaren|Alpine|Aston|Haas|Williams|visa/i.test(user.username) ? 'team' : 'driver';
-
-//                         const updatedUser = await TwitterUser.findOneAndUpdate( { username: user.username },
-//                             {
-//                                 username: user.username,
-//                                 userId: user.id,
-//                                 displayName: user.name,
-//                                 profileImageUrl: user.profile_image_url,
-//                                 category,
-//                                 lastUpdated: new Date()
-//                             },
-//                             { updert: true, new: true }
-//                         );
-//                         updateUsers.push(updatedUser);
-//                     }
-//                 }
-//             }
-
-//             res.json({
-//                 message: `U[dated ${updatedUsers.length} Twitter users`,
-//                 users: updateUsers
-//             })
-//         }
-//     }
-//     catch (error) {
-//         console.error('Error initializing Twitter users:', error);
-//         res.status(500).json({ 
-//         message: 'Error initializing Twitter users', 
-//         error: error.message,
-//         details: error.response?.data
-//         });
-//     }
-// };
-
-// export const fetchRecentTweets = async(req, res) => {
-//     try {
-//         if(!TWITTER_BEARER_TOKEN) {
-//             return res.status(500).json({ message: 'Twitter Bearer Token not set' });
-//         }
-//         const twitterUsers = await TwitterUser.find({});
-
-//         if(twitterUsers.length === 0) {
-//             return res.status(404).json({ message: 'No users available' });
-//         }
-
-//         let newTweetsCount = 0;
-//         let updatedTweetsCount = 0;
-
-//         for(let i = 0; i < twitterUsers.length; i += 3)
-//     }
-// }
+        
+    }
+    catch(error){}
+}
