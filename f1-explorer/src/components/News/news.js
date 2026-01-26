@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './news.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const News = () => {
     const [articles, setArticles] = useState([]);
     const [savedArticles, setSavedArticles] = useState([]);
@@ -30,7 +32,7 @@ const News = () => {
                     break;
             }
 
-            const res = await fetch(`http://localhost:5000/api/news/${endpoint}`, {
+            const res = await fetch(`${API_URL}/api/news/${endpoint}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -68,7 +70,7 @@ const News = () => {
                 category: 'general'
             };
             
-            const res = await fetch('http://localhost:5000/api/news/save', {
+            const res = await fetch(`${API_URL}/api/news/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +95,7 @@ const News = () => {
         try {
             const token = localStorage.getItem('token');
             
-            const res = await fetch(`http://localhost:5000/api/news/saved/${articleId}`, {
+            const res = await fetch(`${API_URL}/api/news/saved/${articleId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

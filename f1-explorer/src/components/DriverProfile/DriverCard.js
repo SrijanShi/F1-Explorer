@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './DriverCard.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const DriverCard = ({ driver, onClick }) => {
     const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
     const optimizedImageUrl = `http://localhost:3002/optimized-image?imageUrl=${encodeURIComponent(driver.headshot_url)}&width=200&height=200`;
@@ -11,7 +13,7 @@ const DriverCard = ({ driver, onClick }) => {
         
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/user/favorites', {
+            const response = await fetch(`${API_URL}/api/user/favorites`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

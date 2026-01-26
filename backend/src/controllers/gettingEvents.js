@@ -28,14 +28,27 @@ function formatTime(seconds) {
 
 export async function extractEventsFromTranscripts(req, res) {
   try {
-    const videos = await F1VideoDetail.find({ transcript: { $exists: true, $ne: [] } });
-    if (videos.length === 0) return res.status(404).json({ message: "No transcripts found." });
+    // Only get videos with transcripts but WITHOUT events or with empty events array
+    const videos = await F1VideoDetail.find({ 
+      transcript: { $exists: true, $ne: [] },
+      $or: [
+        { events: { $exists: false } },
+        { events: { $size: 0 } }
+      ]
+    });
+    
+    if (videos.length === 0) {
+      console.log('✅ All videos with transcripts already have events!');
+      return res.status(200).json({ message: "✔️ All videos already have events extracted." });
+    }
 
+    console.log(`📊 Processing ${videos.length} videos without events (skipping ${await F1VideoDetail.countDocuments({ events: { $exists: true, $ne: [] } })} videos that already have events)`);
+    
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     for (const v of videos) {
       try {
-        console.log(`Processing video: ${v.videoId}`);
+        console.log(`Processing video: ${v.videoId} - ${v.title}`);
 
         // Pass transcript as JSON
         const transcriptJson = JSON.stringify(v.transcript);

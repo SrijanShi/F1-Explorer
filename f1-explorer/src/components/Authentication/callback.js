@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Callback = () => {
     const { isAuthenticated, user, isLoading } = useAuth0();
     const navigate = useNavigate();
@@ -22,7 +24,7 @@ const Callback = () => {
                     };
                     
                     // Send user data to backend
-                    const response = await fetch('http://localhost:5000/api/auth/auth0', {
+                    const response = await fetch(`${API_URL}/api/auth/auth0`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

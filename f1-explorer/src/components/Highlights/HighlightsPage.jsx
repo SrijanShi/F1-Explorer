@@ -4,6 +4,8 @@ import HighlightCard from './HighlightCard';
 import HighlightDetail from './HighlightDetail';
 import './Highlights.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const HighlightsPage = () => {
     const [highlights, setHighlights] = useState([]);
     const [selectedHighlight, setSelectedHighlight] = useState(null);
@@ -18,7 +20,7 @@ const HighlightsPage = () => {
     const fetchHighlights = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:5000/api/highlights/get');
+            const response = await fetch(`${API_URL}/api/highlights/get`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch highlights');

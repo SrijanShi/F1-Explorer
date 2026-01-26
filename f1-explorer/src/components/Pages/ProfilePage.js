@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ const ProfilePage = () => {
         const fetchUserProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:5000/api/user/profile', {
+                const response = await fetch(`${API_URL}/api/user/profile`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -55,7 +57,7 @@ const ProfilePage = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/user/profile', {
+            const response = await fetch(`${API_URL}/api/user/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +84,7 @@ const ProfilePage = () => {
     const addFavoriteDriver = async (driver) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/user/favorites', {
+            const response = await fetch(`${API_URL}/api/user/favorites`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,7 +114,7 @@ const ProfilePage = () => {
     const removeFavoriteDriver = async (driverNumber) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/user/favorites/${driverNumber}`, {
+            const response = await fetch(`${API_URL}/api/user/favorites/${driverNumber}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

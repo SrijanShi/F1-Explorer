@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const HighlightDetail = ({ highlight, onBack }) => {
     const [videoData, setVideoData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ const HighlightDetail = ({ highlight, onBack }) => {
             setLoading(true);
             
             // Fetch video details with events
-            const response = await fetch(`http://localhost:5000/api/highlights/video/${highlight.videoId}`);
+            const response = await fetch(`${API_URL}/api/highlights/video/${highlight.videoId}`);
             
             if (!response.ok) {
                 throw new Error('Failed to load video details');
