@@ -1,8 +1,249 @@
-# 🚀 Quick Start Deployment Guide
+# 🚀 Quick Start Deployment Guide - Fly.io
 
-Your code is now ready for deployment! Follow these steps:
+Your code is now ready for deployment on Fly.io! Follow these steps:
 
-## Step 1: Set Up MongoDB Atlas (5 minutes)
+## Why Fly.io?
+
+✅ **All services in ONE container** - Cost-effective!  
+✅ **Free tier with 3 VMs** - Perfect for your app  
+✅ **Global CDN** - Fast worldwide  
+✅ **Simple deployment** - Just `flyctl deploy`  
+✅ **Automatic SSL** - HTTPS out of the box  
+
+---
+
+## Step 1: Install Flyctl (2 minutes)
+
+### Install:
+```bash
+curl -L https://fly.io/install.sh | sh
+```
+
+### Add to PATH:
+```bash
+# Add to ~/.zshrc
+export FLYCTL_INSTALL="/Users/srijanshitashma/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+# Reload shell
+source ~/.zshrc
+
+# Verify
+flyctl version
+```
+
+### Login:
+```bash
+flyctl auth login
+```
+Browser will open for authentication.
+
+---
+
+## Step 2: Set Environment Variables (3 minutes)
+
+```bash
+cd /Users/srijanshitashma/Desktop/f1
+
+# MongoDB (Already migrated! ✅)
+flyctl secrets set MONGODB_URI="mongodb+srv://srijanshitashma_db_user:kJ2KsmFvAls8l26t@cluster0.gmsrvmd.mongodb.net/f1_explorer?retryWrites=true&w=majority"
+
+# API Keys
+flyctl secrets set YOUTUBE_API_KEY="AIzaSyBEpj-gGku5cqiIMQ1_Vis5q_TAjqwqS7A"
+flyctl secrets set GEMIMI_API_KEY="AIzaSyCAs3vf3nryMutBkdHj50g3JxxlailOKD4"
+flyctl secrets set NEWS_API_KEY="34408f8daebe432287b43cc398873440"
+
+# JWT Secret
+flyctl secrets set JWT_SECRET="et8knkD4NKSFQA6K7t9NumA1KoM5FVR86gWTpMsqHqg="
+
+# Frontend URL (update after first deploy)
+flyctl secrets set REACT_APP_API_URL="https://f1-explorer-app.fly.dev"
+flyctl secrets set FRONTEND_URL="https://f1-explorer-app.fly.dev"
+
+# Auth0 (get from Auth0 dashboard)
+flyctl secrets set REACT_APP_AUTH0_DOMAIN="your-auth0-domain.auth0.com"
+flyctl secrets set REACT_APP_AUTH0_CLIENT_ID="your-auth0-client-id"
+flyctl secrets set REACT_APP_AUTH0_REDIRECT_URI="https://f1-explorer-app.fly.dev/callback"
+```
+
+---
+
+## Step 3: Deploy! (5 minutes)
+
+```bash
+cd /Users/srijanshitashma/Desktop/f1
+
+# Create app (if not exists)
+flyctl apps create f1-explorer-app
+
+# Deploy
+flyctl deploy
+
+# Monitor deployment
+flyctl logs
+```
+
+**Expected output:**
+```
+==> Building image
+==> Pushing image to fly
+==> Creating release
+--> v1 deployed successfully
+```
+
+---
+
+## Step 4: Update Auth0 (2 minutes)
+
+1. Go to [Auth0 Dashboard](https://manage.auth0.com)
+2. Applications → Your App → Settings
+3. Update:
+
+**Allowed Callback URLs:**
+```
+http://localhost:3000/callback, https://f1-explorer-app.fly.dev/callback
+```
+
+**Allowed Logout URLs:**
+```
+http://localhost:3000, https://f1-explorer-app.fly.dev
+```
+
+**Allowed Web Origins:**
+```
+http://localhost:3000, https://f1-explorer-app.fly.dev
+```
+
+4. **Save Changes**
+
+---
+
+## Step 5: Test Your App! 🎉
+
+### Open in browser:
+```bash
+flyctl open
+```
+Or visit: `https://f1-explorer-app.fly.dev`
+
+### Test Backend API:
+```bash
+curl https://f1-explorer-app.fly.dev/api/highlights/videos | jq 'length'
+# Should return: 25
+```
+
+### Test Features:
+- ✅ Sign up / Login with Auth0
+- ✅ View F1 News
+- ✅ Browse race highlights
+- ✅ Click on a race to see event timeline
+- ✅ Add drivers to favorites
+- ✅ View your profile
+
+---
+
+## Useful Commands
+
+```bash
+# View status
+flyctl status
+
+# View logs
+flyctl logs
+
+# SSH into container
+flyctl ssh console
+
+# List secrets
+flyctl secrets list
+
+# Scale resources
+flyctl scale vm shared-cpu-1x --memory 512
+
+# Restart app
+flyctl apps restart f1-explorer-app
+```
+
+---
+
+## Troubleshooting
+
+### ⚠️ Build Failed?
+```bash
+# Check logs
+flyctl logs
+
+# Test locally
+docker build -t f1-test .
+```
+
+### ⚠️ MongoDB Connection Failed?
+```bash
+# Verify secret
+flyctl secrets list | grep MONGODB
+
+# Check Atlas IP whitelist (should be 0.0.0.0/0)
+```
+
+### ⚠️ Services Not Starting?
+```bash
+# SSH into container
+flyctl ssh console
+
+# Check processes
+ps aux | grep -E 'node|python|nginx'
+
+# Check logs
+tail -f /var/log/supervisord.log
+```
+
+### ⚠️ Auth0 Login Not Working?
+- Verify callback URLs in Auth0 dashboard
+- Check secrets: `flyctl secrets list`
+- Clear browser cache
+
+---
+
+## Cost: FREE! 💰
+
+Your entire application runs on free tier:
+- ✅ Fly.io: 3 shared VMs (256MB each)
+- ✅ MongoDB Atlas: M0 cluster (512MB)
+- ✅ Total: **$0/month**
+
+⚠️ App sleeps after inactivity (wakes in ~30 seconds)
+
+Upgrade to production: **~$14/month** (always-on)
+
+---
+
+## Next Steps
+
+1. ✅ Deploy to Fly.io
+2. ✅ Update Auth0 settings
+3. ✅ Test your live app
+4. 📱 Share with friends: `https://f1-explorer-app.fly.dev`
+5. 📊 Monitor: `flyctl logs`
+
+---
+
+## Need More Help?
+
+See **[FLY_DEPLOYMENT.md](FLY_DEPLOYMENT.md)** for comprehensive guide with:
+- Detailed troubleshooting
+- Architecture diagrams
+- Performance tips
+- Security checklist
+- Scaling options
+
+---
+
+## 🏁 You're Live!
+
+**Your F1 Explorer:** https://f1-explorer-app.fly.dev
+
+Happy racing! 🏎️💨
+
 
 ### 1.1 Create Account & Cluster
 1. Go to [mongodb.com/cloud/atlas/register](https://www.mongodb.com/cloud/atlas/register)

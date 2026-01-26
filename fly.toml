@@ -1,31 +1,47 @@
-# fly.toml app configuration file generated for f1-explorer-app
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# fly.toml - F1 Explorer Application Configuration
+# Complete application: React Frontend + Node.js Backend + Python API
 
 app = "f1-explorer-app"
 primary_region = "iad"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  auto_rollback = true
 
 [build]
-  builder = "paketobuildpacks"
+
+[deploy]
+  release_command = "echo 'Deployment starting...'"
 
 [env]
   NODE_ENV = "production"
+  PORT = "5000"
+  PYTHON_API_URL = "http://localhost:8000"
 
-[[services]]
-  internal_port = 3002
-  processes = ["app"]
-
-  [services.http_checks]
-    enabled = true
-    uri = "/api/health"
-
-[[services]]
-  internal_port = 3000
-  processes = ["app"]
-
+# HTTP service configuration
 [http_service]
-  internal_port = 3002
+  internal_port = 5000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
   processes = ["app"]
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "5s"
+    method = "GET"
+    path = "/api/highlights/videos"
+
+# VM Resources
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

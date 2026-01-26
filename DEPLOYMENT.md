@@ -6,85 +6,85 @@ Your F1 Explorer application consists of:
 1. **React Frontend** - Static site (port 3000 locally)
 2. **Node.js Backend** - Express API (port 5000 locally)
 3. **Python FastAPI Service** - Transcript fetching (port 8000 locally)
-4. **MongoDB Database** - Data storage
+4. **MongoDB Database** - Data storage (MongoDB Atlas)
 
-## Recommended: Render (Best for Your Project)
+## Recommended: Fly.io (Best for Your Project)
 
-**Why Render?**
-- ✅ Free tier available for all services
-- ✅ Native support for Node.js, Python, and static sites
-- ✅ Easy GitHub integration with auto-deploys
-- ✅ Built-in environment variable management
-- ✅ Free SSL certificates
-- ✅ Simple blueprint deployment with `render.yaml`
+**Why Fly.io?**
+- ✅ Free tier with 3 VMs and 3GB storage
+- ✅ Runs all services in a single container (cost-effective)
+- ✅ Automatic SSL certificates
+- ✅ Global CDN and edge computing
+- ✅ Simple deployment with `flyctl deploy`
+- ✅ Auto-scaling and auto-sleep on free tier
+- ✅ Built-in health checks and monitoring
 
 ---
 
-## Step-by-Step Deployment on Render
+## Quick Start: Deploy to Fly.io
 
-### Phase 1: Set Up MongoDB Atlas
+### See [FLY_DEPLOYMENT.md](FLY_DEPLOYMENT.md) for complete step-by-step guide!
 
-1. **Create MongoDB Atlas Account**
-   - Go to [mongodb.com/atlas](https://www.mongodb.com/atlas)
-   - Sign up for free tier
+**Quick steps:**
+1. Install flyctl: `curl -L https://fly.io/install.sh | sh`
+2. Login: `flyctl auth login`
+3. Set secrets: `flyctl secrets set MONGODB_URI="..."`
+4. Deploy: `flyctl deploy`
+5. Done! 🎉
 
-2. **Create a Cluster**
-   - Click "Build a Database"
-   - Select "M0 Free" tier
-   - Choose a region closest to your Render services (US East recommended)
-   - Name: `f1-cluster`
+**Total time: ~15 minutes**
 
-3. **Configure Database Access**
-   - Go to "Database Access" → "Add New Database User"
-   - Create username/password (save these securely!)
-   - Grant "Read and write to any database" privileges
+---
 
-4. **Configure Network Access**
-   - Go to "Network Access" → "Add IP Address"
-   - Click "Allow Access from Anywhere" (0.0.0.0/0)
-   - This is needed for Render services
+---
 
-5. **Get Connection String**
-   - Go to "Database" → Click "Connect" on your cluster
-   - Choose "Connect your application"
-   - Copy the connection string, it looks like:
-     ```
-     mongodb+srv://username:<password>@f1-cluster.xxxxx.mongodb.net/?retryWrites=true&w=majority
-     ```
-   - Replace `<password>` with your actual password
-   - Add database name: `mongodb+srv://username:password@f1-cluster.xxxxx.mongodb.net/f1_explorer?retryWrites=true&w=majority`
+## MongoDB Atlas Setup (Already Complete! ✅)
 
-### Phase 2: Prepare Your Code
+Your MongoDB Atlas is already configured and migrated!
 
-1. **Update Frontend API URLs**
-   
-   Edit these files to use environment variable instead of localhost:
-   
-   - `f1-explorer/src/components/Authentication/ProfilePage.js`
-   - `f1-explorer/src/components/News/news.js`
-   - `f1-explorer/src/components/Highlights/HighlightsPage.jsx`
-   
-   Replace `http://localhost:5000` with:
-   ```javascript
-   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-   // Then use: `${API_URL}/api/...`
-   ```
+**Current Setup:**
+- Cluster: cluster0.gmsrvmd.mongodb.net
+- Database: f1_explorer
+- Collections: f1videos (25), f1videodetails (25), users (8), savedarticles (3)
+- Connection String: Already in backend/.env
 
-2. **Verify Backend Environment Variables**
-   
-   Ensure `backend/src/controllers/gettingTranscript.js` uses:
-   ```javascript
-   const PYTHON_API_URL = process.env.PYTHON_API_URL || 'http://127.0.0.1:8000';
-   ```
+---
 
-3. **Push to GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Prepare for Render deployment"
-   git remote add origin <your-github-repo-url>
-   git push -u origin main
-   ```
+## Alternative Deployment Options
+
+### Option 2: Railway
+
+Similar to Fly.io, excellent for multi-service apps:
+- Visit [railway.app](https://railway.app)
+- Better for monorepos
+- $5 credit/month free tier
+- Easier environment variable management
+
+**Deployment Steps:**
+1. Create new project from GitHub repo
+2. Railway auto-detects and suggests services
+3. Add MongoDB Atlas connection string
+4. Deploy with one click
+
+### Option 3: Docker Compose + VPS
+
+For more control, deploy to any VPS:
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+    restart: always
+```
+
+Deploy to DigitalOcean, Linode, or AWS EC2.
 
 ### Phase 3: Deploy on Render
 
@@ -97,107 +97,72 @@ Your F1 Explorer application consists of:
 2. **New Blueprint Instance**
    - Click "New +" → "Blueprint"
    - Connect your GitHub repository
-   - Render will detect `render.yaml` automatically
+---
 
-3. **Configure Environment Variables**
-   
-   Render will prompt for these variables:
-   
-   **For f1-backend:**
-   - `MONGODB_URI`: Your MongoDB Atlas connection string
-   - `YOUTUBE_API_KEY`: Your YouTube Data API v3 key
-   - `GEMIMI_API_KEY`: Your Google Gemini API key
-   - `NEWS_API_KEY`: Your News API key
-   - `JWT_SECRET`: Generate a secure random string (e.g., `openssl rand -base64 32`)
-   - `PORT`: `5000`
-   - `PYTHON_API_URL`: Will be `https://f1-python-api.onrender.com` (update after Python service deploys)
-   
-   **For f1-python-api:**
-   - `PORT`: `8000`
-   
-   **For f1-frontend:**
-   - `REACT_APP_API_URL`: Will be `https://f1-backend.onrender.com` (update after backend deploys)
-   - `REACT_APP_AUTH0_DOMAIN`: Your Auth0 domain
-   - `REACT_APP_AUTH0_CLIENT_ID`: Your Auth0 client ID
+## Cost Breakdown
 
-4. **Deploy**
-   - Click "Apply"
-   - Render will deploy all three services simultaneously
-   - Wait 5-10 minutes for initial deployment
+### Free Tier (Development/Portfolio)
+- **Fly.io Free**: 
+  - 3 shared VMs (256MB each)
+  - 3GB persistent volumes
+  - 100GB bandwidth/month
+  - Auto-sleep after inactivity
+  - Total: $0/month
 
-5. **Update Service URLs**
-   
-   After first deployment, you need to update the URLs:
-   
-   a. Copy your service URLs:
-      - Backend: `https://f1-backend.onrender.com`
-      - Python API: `https://f1-python-api.onrender.com`
-      - Frontend: `https://f1-explorer.onrender.com`
-   
-   b. Update environment variables:
-      - In backend service settings, set `PYTHON_API_URL` to Python service URL
-      - In frontend service settings, set `REACT_APP_API_URL` to backend URL
-   
-   c. Trigger manual redeploys for services with updated env vars
+- **MongoDB Atlas Free**: 
+  - 512 MB storage
+  - Shared RAM
+  - Total: $0/month
 
-#### Option B: Manual Service Creation
+**Total: $0/month** ✅
 
-If you prefer more control:
+### Production Tier (Recommended for Real Users)
+- **Fly.io Hobby**: 
+  - Shared CPU, 512MB RAM
+  - Always-on instance
+  - Total: $5/month
 
-1. **Deploy Python Service First**
-   - New + → Web Service
-   - Connect GitHub repo
-   - Settings:
-     - Name: `f1-python-api`
-     - Environment: `Python 3`
-     - Build Command: `cd backend/src/python && pip install -r requirements.txt`
-     - Start Command: `cd backend/src/python && uvicorn highlightExtractor:app --host 0.0.0.0 --port $PORT`
-   - Deploy and copy the URL
+- **MongoDB Atlas Shared**: 
+  - 2-5 GB storage
+  - Total: $9/month
 
-2. **Deploy Backend Service**
-   - New + → Web Service
-   - Settings:
-     - Name: `f1-backend`
-     - Environment: `Node`
-     - Build Command: `cd backend && npm install`
-     - Start Command: `cd backend && node index.js`
-   - Add all backend environment variables (including `PYTHON_API_URL` from step 1)
-   - Deploy and copy the URL
-
-3. **Deploy Frontend**
-   - New + → Static Site
-   - Settings:
-     - Name: `f1-frontend`
-     - Build Command: `cd f1-explorer && npm install && npm run build`
-     - Publish Directory: `f1-explorer/build`
-   - Add `REACT_APP_API_URL` (from step 2)
-   - Deploy
-
-### Phase 4: Configure Auth0 for Production
-
-1. Go to Auth0 Dashboard → Applications → Your App
-2. Update these settings:
-   - **Allowed Callback URLs**: Add `https://your-frontend-url.onrender.com/callback`
-   - **Allowed Logout URLs**: Add `https://your-frontend-url.onrender.com`
-   - **Allowed Web Origins**: Add `https://your-frontend-url.onrender.com`
-
-### Phase 5: Test Your Deployment
-
-1. Visit your frontend URL: `https://f1-frontend.onrender.com`
-2. Test authentication flow (Auth0 login/signup)
-3. Test fetching videos: Check backend logs for video ID fetching
-4. Test transcript fetching: Check Python service logs
-5. Test event generation: Should create events for new races
+**Total: ~$14/month**
 
 ---
 
-## Alternative Deployment Options
+## Troubleshooting
 
-### Option 2: Railway
+### Issue: Services Can't Communicate
 
-Similar to Render, excellent for multi-service apps:
-- Visit [railway.app](https://railway.app)
-- Better for monorepos
+**Solution:** All services run in same container on Fly.io, communicate via localhost ✅
+
+### Issue: Frontend Shows 404 for API Calls
+
+**Solution:** Check CORS configuration in `backend/index.js`:
+```javascript
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://f1-explorer-app.fly.dev'
+  ]
+}));
+```
+
+### Issue: MongoDB Connection Fails
+
+**Solution:** 
+1. Verify IP whitelist includes 0.0.0.0/0
+2. Check connection string format
+3. Verify secret is set: `flyctl secrets list`
+
+### Issue: Build Fails
+
+**Solution:**
+1. Check Dockerfile syntax
+2. Test locally: `docker build -t f1-test .`
+3. View build logs: `flyctl logs`
+
+---
 - More generous free tier ($5 credit/month)
 - Easier environment variable management
 - Slightly better performance
@@ -324,15 +289,67 @@ app.use(cors({
 2. Upgrade to paid tier ($7/month per service)
 3. Use UptimeRobot for monitoring and keep-alive pings
 
-### Issue: Transcripts Fail (YouTube Rate Limit)
+---
 
-**Solution:**
-- YouTube has strict rate limits
-- Add delays between transcript fetches in production
-- Consider caching transcripts once fetched
-- Use YouTube Transcript API alternatives if available
+## Security Checklist
+
+Before going live:
+
+- [x] All API keys in environment variables (never commit to Git)
+- [x] MongoDB Atlas network access configured
+- [x] Auth0 callback URLs updated for production domain
+- [x] CORS configured with specific origins
+- [x] JWT_SECRET is strong random string
+- [ ] Rate limiting enabled on backend endpoints
+- [ ] Input validation on all API routes
+- [x] HTTPS enforced (Fly.io provides this automatically)
 
 ---
+
+## Monitoring & Maintenance
+
+1. **Fly.io Dashboard**
+   - Monitor VM health: `flyctl status`
+   - Check logs: `flyctl logs`
+   - Track deployments: `flyctl releases`
+
+2. **MongoDB Atlas**
+   - Monitor database size
+   - Set up alerts for connection issues
+   - Regular backups (Atlas handles this)
+
+3. **Error Tracking**
+   - Consider adding Sentry.io for error monitoring
+   - Set up log aggregation
+
+4. **Performance**
+   - Monitor API response times
+   - Track Gemini AI API quota usage
+   - Set up uptime monitoring (UptimeRobot)
+
+---
+
+## Next Steps
+
+1. ✅ Created comprehensive Dockerfile
+2. ✅ Updated fly.toml configuration
+3. ✅ MongoDB Atlas migrated and connected
+4. ✅ Frontend using environment variables
+5. 🔄 Deploy to Fly.io (see [FLY_DEPLOYMENT.md](FLY_DEPLOYMENT.md))
+6. 🔄 Update Auth0 settings
+7. 🔄 Test complete workflow in production
+
+---
+
+## Support
+
+If you encounter issues:
+- Fly.io docs: [fly.io/docs](https://fly.io/docs)
+- MongoDB Atlas docs: [docs.atlas.mongodb.com](https://docs.atlas.mongodb.com)
+- Fly.io community: [community.fly.io](https://community.fly.io)
+
+Good luck with your deployment! 🏎️
+
 
 ## Security Checklist
 
